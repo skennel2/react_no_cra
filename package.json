@@ -6,11 +6,10 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "build": "webpack --mode=production --node-env=production",
-    "build:dev": "webpack --mode=development",
+    "build:dev": "webpack --mode=development --node-env=development",
     "build:prod": "webpack --mode=production --node-env=production",
-    "watch": "webpack --watch",
-    "serve": "webpack serve",
-    "start": "webpack serve --open"
+    "watch": "webpack --watch --node-env=development",
+    "start": "webpack serve --open --node-env=development"
   },
   "author": "",
   "license": "ISC",
@@ -19,11 +18,13 @@
     "react-dom": "^18.0.0"
   },
   "devDependencies": {
+    "@types/dotenv": "^8.2.0",
     "@types/react": "^18.0.1",
     "@types/react-dom": "^18.0.0",
     "@webpack-cli/generators": "^2.4.2",
     "autoprefixer": "^10.4.2",
     "css-loader": "^6.7.1",
+    "dotenv": "^16.0.0",
     "html-webpack-plugin": "^5.5.0",
     "mini-css-extract-plugin": "^2.6.0",
     "postcss": "^8.4.12",

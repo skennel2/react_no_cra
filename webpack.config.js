@@ -1,12 +1,21 @@
 // Generated using webpack-cli https://github.com/webpack/webpack-cli
 
 const path = require('path');
+const dotenv = require('dotenv');
+const webpack = require('webpack');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
+const stylesHandler = MiniCssExtractPlugin.loader;
 
 const isProduction = process.env.NODE_ENV == 'production';
 
-const stylesHandler = MiniCssExtractPlugin.loader;
+function setupDotenv() {
+    dotenv.config({
+        path: isProduction ? path.resolve(process.cwd(), '.env.production') : path.resolve(process.cwd(), '.env')
+    });
+}
+
+setupDotenv();
 
 const config = {
     entry: './src/index.tsx',
@@ -22,6 +31,9 @@ const config = {
             template: 'index.html',
         }),
         new MiniCssExtractPlugin(),
+        new webpack.DefinePlugin({
+            "process.env": JSON.stringify(process.env),
+        })
     ],
     module: {
         rules: [

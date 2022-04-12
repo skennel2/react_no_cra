@@ -1,6 +1,8 @@
 import React, { useState, useCallback } from 'react';
 import { createRoot } from 'react-dom/client';
 
+console.log(process.env.TEST_VALUE)
+
 function runApp() {
     const container = document.getElementById('root');
     if(container) {
@@ -22,6 +24,7 @@ function ClickCounter(props: {name: string}) {
     return (
         <span onClick={handleClick}>
             {props.name} {count}
+            {process.env.TEST_VALUE}
         </span>
     )
 }
