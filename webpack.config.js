@@ -6,9 +6,9 @@ const webpack = require('webpack');
 const dotenvWebpack = require('dotenv-webpack');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
-const stylesHandler = MiniCssExtractPlugin.loader;
 
 const isProduction = process.env.NODE_ENV == 'production';
+const stylesHandler = isProduction ? MiniCssExtractPlugin.loader : 'style-loader';
 
 // function setupDotenv() {
 //     dotenv.config({
@@ -22,6 +22,7 @@ const config = {
     entry: './src/index.tsx',
     output: {
         path: path.resolve(__dirname, 'dist'),
+        clean: true
     },
     devServer: {
         open: true,
@@ -30,7 +31,9 @@ const config = {
     plugins: [
         new HtmlWebpackPlugin({
             template: 'index.html',
+
         }),
+        // CSS 파일을 별도 파일로 추출
         new MiniCssExtractPlugin(),
         // DefinePlugin을 이용한 환경변수 설정
         // new webpack.DefinePlugin({

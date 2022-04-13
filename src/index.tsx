@@ -1,6 +1,8 @@
 import React, { useState, useCallback } from 'react';
 import { createRoot } from 'react-dom/client';
 import testImage from './images/screenshot.png';
+import './index.css';
+import TestComponent from './TestComponent';
 
 function logForTestEnvValueSettting() {
     console.log(process.env.TEST_VALUE)
@@ -16,6 +18,7 @@ function runApp() {
             <>
                 <ClickCounter name={'카운터'} />
                 <ImageLoadTest />
+                <TestComponent />
             </>
         );
 
@@ -23,7 +26,7 @@ function runApp() {
     }
 }
 
-function ClickCounter(props: { name: string }) {
+export function ClickCounter(props: { name: string }) {
     const [count, setCount] = useState(0);
 
     const handleClick = useCallback((e: any) => {
@@ -32,14 +35,14 @@ function ClickCounter(props: { name: string }) {
     }, [count]);
 
     return (
-        <div onClick={handleClick}>
+        <div onClick={handleClick} className={"red"}>
             {props.name} {count}
             {process.env.TEST_VALUE}
         </div>
     )
 }
 
-function ImageLoadTest() {
+export function ImageLoadTest() {
     return (
         <img src={testImage} alt={'for test'} />
     )
