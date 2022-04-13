@@ -10,14 +10,14 @@ const stylesHandler = MiniCssExtractPlugin.loader;
 
 const isProduction = process.env.NODE_ENV == 'production';
 
-function setupDotenv() {
-    dotenv.config({
-        path: isProduction ? path.resolve(process.cwd(), '.env.production') : path.resolve(process.cwd(), '.env')
-    });
-}
+// function setupDotenv() {
+//     dotenv.config({
+//         path: isProduction ? path.resolve(process.cwd(), '.env.production') : path.resolve(process.cwd(), '.env')
+//     });
+// }
+// setupDotenv();
 
-setupDotenv();
-
+/**@type {import('webpack').Configuration} */
 const config = {
     entry: './src/index.tsx',
     output: {
@@ -32,11 +32,14 @@ const config = {
             template: 'index.html',
         }),
         new MiniCssExtractPlugin(),
+        // DefinePlugin을 이용한 환경변수 설정
         // new webpack.DefinePlugin({
         //     "process.env": JSON.stringify(process.env),
         // })
+        // dotenv-webpack 패키지를 이용한 환경변수 설정
         new dotenvWebpack({
-            path: isProduction ? path.resolve(process.cwd(), '.env.production') : path.resolve(process.cwd(), '.env')
+            path: isProduction ? 
+                path.resolve(process.cwd(), '.env.production') : path.resolve(process.cwd(), '.env')
         }),
     ],
     module: {
@@ -53,10 +56,12 @@ const config = {
             {
                 test: /\.(eot|svg|ttf|woff|woff2|png|jpg|gif)$/i,
                 type: 'asset',
+
             },
         ],
     },
     resolve: {
+        // import 구문에서 다음 확장자를 생략할수 있게 해준다.
         extensions: ['.tsx', '.ts', '.js'],
     },
 };

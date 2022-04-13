@@ -1,19 +1,29 @@
 import React, { useState, useCallback } from 'react';
 import { createRoot } from 'react-dom/client';
+import testImage from './images/screenshot.png';
 
-console.log(process.env.TEST_VALUE)
+function logForTestEnvValueSettting() {
+    console.log(process.env.TEST_VALUE)
+}
 
 function runApp() {
+    logForTestEnvValueSettting();
+
     const container = document.getElementById('root');
-    if(container) {
+    if (container) {
         const root = createRoot(container);
-        root.render(<ClickCounter name={'카운터'}/>);
-    
-        console.log("app started");
+        root.render(
+            <>
+                <ClickCounter name={'카운터'} />
+                <ImageLoadTest />
+            </>
+        );
+
+        console.log("app started!");
     }
 }
 
-function ClickCounter(props: {name: string}) {
+function ClickCounter(props: { name: string }) {
     const [count, setCount] = useState(0);
 
     const handleClick = useCallback((e: any) => {
@@ -22,10 +32,16 @@ function ClickCounter(props: {name: string}) {
     }, [count]);
 
     return (
-        <span onClick={handleClick}>
+        <div onClick={handleClick}>
             {props.name} {count}
             {process.env.TEST_VALUE}
-        </span>
+        </div>
+    )
+}
+
+function ImageLoadTest() {
+    return (
+        <img src={testImage} alt={'for test'} />
     )
 }
 
