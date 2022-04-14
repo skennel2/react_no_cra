@@ -3,6 +3,7 @@ import { createRoot } from 'react-dom/client';
 import testImage from './images/screenshot.png';
 import './index.css';
 import TestComponent from './TestComponent';
+import styled from 'styled-components';
 
 function logForTestEnvValueSettting() {
     console.log(process.env.TEST_VALUE)
@@ -11,13 +12,18 @@ function logForTestEnvValueSettting() {
 function runApp() {
     logForTestEnvValueSettting();
 
+    const StyledImageLoadTest = styled(ImageLoadTest)`
+        width: 300px;
+        height: 300px;
+    `;
+
     const container = document.getElementById('root');
     if (container) {
         const root = createRoot(container);
         root.render(
             <>
                 <ClickCounter name={'카운터'} />
-                <ImageLoadTest />
+                <StyledImageLoadTest />
                 <TestComponent />
             </>
         );
@@ -27,6 +33,20 @@ function runApp() {
 }
 
 export function ClickCounter(props: { name: string }) {
+    const SimpleRect = styled.div`
+        color: tomato;
+        border-color: tomato;
+        border: 1px solid;
+        display: inline-block;
+        padding: 10px;
+        border-radius: 10px
+    `;
+
+    const RedRect = styled(SimpleRect)`
+        color: red;
+        border-color: red;
+    `;
+
     const [count, setCount] = useState(0);
 
     const handleClick = useCallback((e: any) => {
@@ -35,16 +55,17 @@ export function ClickCounter(props: { name: string }) {
     }, [count]);
 
     return (
-        <div onClick={handleClick} className={"red"}>
-            {props.name} {count}
-            {process.env.TEST_VALUE}
-        </div>
+        <>
+            <RedRect onClick={handleClick}>
+                {props.name} {count}
+            </RedRect>
+        </>
     )
 }
 
-export function ImageLoadTest() {
+export function ImageLoadTest(props: {className?: string}) {
     return (
-        <img src={testImage} alt={'for test'} />
+        <img className={props.className} src={testImage} alt={'for test'} />
     )
 }
 
