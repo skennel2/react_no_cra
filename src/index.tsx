@@ -4,6 +4,7 @@ import testImage from './images/screenshot.png';
 import './index.css';
 import TestComponent from './TestComponent';
 import styled from 'styled-components';
+import SqlProcessor from './SqlProcessor';
 
 interface CounterState {
     count: number
@@ -43,9 +44,10 @@ function runApp() {
         const root = createRoot(container);
         root.render(
             <>
-                <ClickCounter name={'카운터'} />
+                {/* <ClickCounter name={'카운터'} />
                 <StyledImageLoadTest />
-                <TestComponent />
+                <TestComponent /> */}
+                <SqlProcessor />
             </>
         );
 
