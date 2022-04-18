@@ -5,8 +5,29 @@ import './index.css';
 import TestComponent from './TestComponent';
 import styled from 'styled-components';
 
-function logForTestEnvValueSettting() {
-    console.log(process.env.TEST_VALUE)
+interface CounterState {
+    count: number
+}
+
+interface CounterAction {
+    type: 'INCREASE' | 'DECREASE',
+    value: number
+}
+
+function counterReducer(initialState: CounterState, action: CounterAction): CounterState {
+    if(action.type === 'INCREASE') {
+        return {
+            ...initialState,
+            count: initialState.count + action.value
+        }
+    } else if(action.type === 'DECREASE')  {
+        return {
+            ...initialState,
+            count: initialState.count - action.value
+        }
+    }
+
+    return initialState;
 }
 
 function runApp() {
@@ -32,6 +53,10 @@ function runApp() {
     }
 }
 
+function logForTestEnvValueSettting() {
+    console.log(process.env.TEST_VALUE)
+}
+
 export function ClickCounter(props: { name: string }) {
     const SimpleRect = styled.div`
         color: tomato;
@@ -55,15 +80,13 @@ export function ClickCounter(props: { name: string }) {
     }, [count]);
 
     return (
-        <>
-            <RedRect onClick={handleClick}>
-                {props.name} {count}
-            </RedRect>
-        </>
+        <RedRect onClick={handleClick}>
+            {props.name} {count}
+        </RedRect>
     )
 }
 
-export function ImageLoadTest(props: {className?: string}) {
+export function ImageLoadTest(props: { className?: string }) {
     return (
         <img className={props.className} src={testImage} alt={'for test'} />
     )
