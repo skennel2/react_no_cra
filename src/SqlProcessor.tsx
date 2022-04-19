@@ -4,10 +4,14 @@ interface SqlProcessorProps {
 
 }
 
+interface SqlItem {
+    original: string, camelCase: string, javaField: string, mybatisVariable: string, mybatisModelVariable: string
+}
+
 export default (props: SqlProcessorProps) => {
     const [value, setValue] = useState('');
-    const [columnData, setColumnData] = useState<{ original: string, camelCase: string, javaField: string }[]>([]);
-
+    const [columnData, setColumnData] = useState<SqlItem[]>([]);
+    const [result, setResult] = useState<string>('');
     return (
         <div style={{
             padding: '10px'
@@ -30,19 +34,54 @@ export default (props: SqlProcessorProps) => {
                         const original = item;
                         const camelCase = toUnderscoreToCamelCase(original);
                         const javaField = decorateValueToJavaField(camelCase);
+                        const mybatisVar = toMyBatisVariable(camelCase);
+                        const mybatisModelVariable = toMyBatisModelVariable(camelCase);
                         return {
                             original: original,
                             camelCase: camelCase,
-                            javaField: javaField
+                            javaField: javaField,
+                            mybatisVariable: mybatisVar,
+                            mybatisModelVariable: mybatisModelVariable
                         }
                     });
 
                 setColumnData(columns);
             }}>RUN</button>
+
+            <button onClick={() => {
+                let result = '';
+                columnData.forEach((item) => {
+                    result += item.original + ' = ' + item.mybatisVariable + ',' + '\r'
+                })
+
+                setResult(result)
+            }}>
+                UPDATE
+            </button>
+            <button onClick={() => {
+                let result = '(';
+                columnData.forEach((item, index) => {
+                    result += item.original + ', ';
+                    if(index > 0 && index % 4 === 0) {
+                        result += '\r'
+                    }
+                })
+                result += ') VALUES ('
+
+                columnData.forEach((item, index) => {
+                    result += item.mybatisModelVariable + ', '
+
+                    if(index > 0 && index % 4 === 0) {
+                        result += '\r'
+                    }
+                })
+
+                setResult(result)
+            }}>
+                INSERT 
+            </button>            
             <div>
-                {
-                    columnData.map((item, index) => <div key={index}>{item.javaField}</div>)
-                }
+                <textarea cols={80} rows={30} value={result} disabled={true}/>
             </div>
         </div>
     )
@@ -57,6 +96,10 @@ export default (props: SqlProcessorProps) => {
 
 function toMyBatisVariable(camelCase: string) {
     return '#{' + camelCase + '}';
+}
+
+function toMyBatisModelVariable(camelCase: string) {
+    return '#{model.' + camelCase + '}';
 }
 
 function decorateValueToJavaField(camelCaseValue: string, type: string = 'String') {
