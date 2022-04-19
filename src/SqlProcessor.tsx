@@ -10,89 +10,142 @@ interface SqlItem {
 
 export default (props: SqlProcessorProps) => {
     const [value, setValue] = useState('');
+    const [prefix, setPrefix] = useState('');
+    const [suffix, setSuffix] = useState('');
+
     const [columnData, setColumnData] = useState<SqlItem[]>([]);
     const [result, setResult] = useState<string>('');
+
+    const handleSetColumnDataClicked = () => {
+        if (!value) {
+            alert('입력된 데이터가 없음')
+        }
+
+        const columns = value.split(/(\s+)/)
+            .filter(item => {return item.trim().length > 0 })
+            .map(item => item.trim())
+            .map(item => item.replace(',', ''))
+            .map(item => {
+                const original = item;
+                const camelCase = toUnderscoreToCamelCase(original);
+                const javaField = decorateValueToJavaField(camelCase);
+                const mybatisVar = toMyBatisVariable(camelCase);
+                const mybatisModelVariable = toMyBatisModelVariable(camelCase);
+                return {
+                    original: original,
+                    camelCase: camelCase,
+                    javaField: javaField,
+                    mybatisVariable: mybatisVar,
+                    mybatisModelVariable: mybatisModelVariable
+                }
+            });
+
+        setColumnData(columns);
+    }
+
+    const handleUpdateClicked = () => {
+        let result = '';
+        columnData.forEach((item) => {
+            result += item.original + ' = ' + item.mybatisVariable + ',' + '\r'
+        })
+
+        setResult(result)
+    }
+
+    const handleInsertClicked = () => {
+        let result = "INSERT INTO \r"
+        result += '(\r';
+
+        columnData.forEach((item, index) => {
+            result += item.original;
+            if (index < columnData.length - 1) {
+                result += ', ';
+            }
+
+            if (index > 0 && index % 4 === 0) {
+                result += '\r'
+            }
+        })
+        result += '\r) VALUES \r(\r'
+
+        columnData.forEach((item, index) => {
+            result += item.mybatisModelVariable;
+            if (index < columnData.length - 1) {
+                result += ', ';
+            }
+
+            if (index > 0 && index % 4 === 0) {
+                result += '\r'
+            }
+        })
+
+        result += '\r)'
+
+        setResult(result)
+    }
+
+    const handlePrefix = () => {
+        const resultData = columnData.map((item) => {
+            return prefix + item.original + suffix
+        });
+
+        setResult(resultData.join('\r'))
+    }
+
+    const handleJavaFieldsClicked = () => {
+        const resultData = columnData.map((item) => {
+            return item.javaField;
+        });
+
+        setResult(resultData.join('\r'))
+    }
+
     return (
         <div style={{
             padding: '10px'
         }}>
-            <div>
-                <textarea cols={80} rows={30} value={value} onChange={(e) => {
-                    setValue(e.target.value);
-                }} />
+            <div style={{
+                display: 'flex'
+
+            }}>
+                <div>
+                    <textarea cols={80} rows={30} value={value} onChange={(e) => {
+                        setValue(e.target.value);
+                    }} />
+                </div>
+                <div>
+                    <textarea cols={80} rows={30} value={result} disabled={true} />
+                </div>
             </div>
-            <button onClick={() => {
-                if (!value) {
-                    alert('입력된 데이터가 없음')
-                }
-
-                const columns = value.split(/(\s+)/)
-                    .filter(item => { console.log(item); return item.trim().length > 0 })
-                    .map(item => item.trim())
-                    .map(item => item.replace(',', ''))
-                    .map(item => {
-                        const original = item;
-                        const camelCase = toUnderscoreToCamelCase(original);
-                        const javaField = decorateValueToJavaField(camelCase);
-                        const mybatisVar = toMyBatisVariable(camelCase);
-                        const mybatisModelVariable = toMyBatisModelVariable(camelCase);
-                        return {
-                            original: original,
-                            camelCase: camelCase,
-                            javaField: javaField,
-                            mybatisVariable: mybatisVar,
-                            mybatisModelVariable: mybatisModelVariable
-                        }
-                    });
-
-                setColumnData(columns);
-            }}>RUN</button>
-
-            <button onClick={() => {
-                let result = '';
-                columnData.forEach((item) => {
-                    result += item.original + ' = ' + item.mybatisVariable + ',' + '\r'
-                })
-
-                setResult(result)
-            }}>
-                UPDATE
-            </button>
-            <button onClick={() => {
-                let result = '(';
-                columnData.forEach((item, index) => {
-                    result += item.original + ', ';
-                    if(index > 0 && index % 4 === 0) {
-                        result += '\r'
-                    }
-                })
-                result += ') VALUES ('
-
-                columnData.forEach((item, index) => {
-                    result += item.mybatisModelVariable + ', '
-
-                    if(index > 0 && index % 4 === 0) {
-                        result += '\r'
-                    }
-                })
-
-                setResult(result)
-            }}>
-                INSERT 
-            </button>            
             <div>
-                <textarea cols={80} rows={30} value={result} disabled={true}/>
+                <div>
+                    <label htmlFor="" title='PREFIX'>
+                        <input type="text"
+                            value={prefix}
+                            onChange={(e) => {
+                                setPrefix(e.target.value)
+                            }} />
+                    </label>
+                    <label htmlFor="" title='SUFFIX'>
+                        <input type="text"
+                            value={suffix}
+                            onChange={(e) => {
+                                setSuffix(e.target.value)
+                            }}
+                        />
+                    </label>
+                    <button onClick={handlePrefix}>PREFIX</button>
+                </div>
+                <div>
+                    <button onClick={handleSetColumnDataClicked}>RUN</button>
+                    <button onClick={handleJavaFieldsClicked}>JAVA Fields</button>
+                    <button onClick={handleUpdateClicked}>UPDATE</button>
+                    <button onClick={handleInsertClicked}>INSERT</button>
+                </div>
             </div>
         </div>
     )
 }
-
-// function toUpdateSql(originals: string[]) {
-//     return `
-//     UPDATE TABLE 
-//        SET ${}
-//     `
-// }
 
 function toMyBatisVariable(camelCase: string) {
     return '#{' + camelCase + '}';
@@ -102,13 +155,17 @@ function toMyBatisModelVariable(camelCase: string) {
     return '#{model.' + camelCase + '}';
 }
 
-function decorateValueToJavaField(camelCaseValue: string, type: string = 'String') {
+function decorateValueToJavaField(camelCaseValue: string) {
+    let type = 'String';
+    if(camelCaseValue.endsWith('Amt') || camelCaseValue.endsWith('Sq')) {
+        type = 'BigDecimal'
+    }
+
     return 'private ' + type + ' ' + camelCaseValue + ';'
 }
 
 function toUnderscoreToCamelCase(value: string) {
     const splitByUnderBarList = value.split('_');
-    console.log(splitByUnderBarList)
     if (splitByUnderBarList.length <= 0) {
         return '';
     }
