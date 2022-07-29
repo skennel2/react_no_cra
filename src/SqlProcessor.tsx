@@ -44,9 +44,9 @@ export default (props: SqlProcessorProps) => {
     }
 
     const handleUpdateClicked = () => {
-        let result = '';
+        let result = 'UPDATE TABLE SET \r';
         columnData.forEach((item) => {
-            result += item.original + ' = ' + item.mybatisVariable + ',' + '\r'
+            result += item.original + ' = ' + item.mybatisModelVariable + ',' + '\r'
         })
 
         setResult(result)
@@ -157,8 +157,10 @@ function toMyBatisModelVariable(camelCase: string) {
 
 function decorateValueToJavaField(camelCaseValue: string) {
     let type = 'String';
-    if(camelCaseValue.endsWith('Amt') || camelCaseValue.endsWith('Sq')) {
-        type = 'BigDecimal'
+    if(camelCaseValue.endsWith('Am') || camelCaseValue.endsWith('Amt') || camelCaseValue.endsWith('Sq')) {
+        type = 'BigDecimal';
+    } else if (camelCaseValue === 'insertDt' || camelCaseValue === 'modifyDt') {
+        type = 'Date';
     }
 
     return 'private ' + type + ' ' + camelCaseValue + ';'

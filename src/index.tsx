@@ -5,6 +5,7 @@ import './index.css';
 import TestComponent from './TestComponent';
 import styled from 'styled-components';
 import SqlProcessor from './SqlProcessor';
+import SWRTest from './SWRTest';
 
 interface CounterState {
     count: number
@@ -47,7 +48,8 @@ function runApp() {
                 {/* <ClickCounter name={'카운터'} />
                 <StyledImageLoadTest />
                 <TestComponent /> */}
-                <SqlProcessor />
+                {/* <SqlProcessor /> */}
+                <SWRTest />
             </>
         );
 

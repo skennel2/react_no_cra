@@ -1,7 +1,7 @@
 # 
 
 ## style-loader, MiniCssExtractPlugin.loader, css-loader, post-css
-style-loader는 문서의 style태그로 css적용, MiniCssExtractPlugin은 별로의 청크별 css파일로 번들링.
+style-loader는 HTML 문서의 style태그로 css적용, MiniCssExtractPlugin은 청크별 css파일로 번들링.
    
 css-loader는 import 'global.css' 처럼 css를 하나의 모듈로서 취급하기위해 사용
 실제로 css-loader없이 css를 import하고 빌드하면 에러가 발생한다.
@@ -16,6 +16,37 @@ ts-loader를 이용하면 아래 명시된 바벨 프로젝트들이 필요없�
 ```
 npm uninstall @babel/cli @babel/core @babel/preset-env @babel/preset-react babel-loader
 ```
+
+## swr 적용
+
+---
+
+
+# 사용 패키지  
+
+## AutoPrefixer: PostCSS 플러그인, 자동으로 벤더 prefix를 채워주는 기능  
+처리전  
+```
+::placeholder {
+  color: gray;
+}
+```
+  
+처리후  
+```
+::-moz-placeholder {
+  color: gray;
+}
+:-ms-input-placeholder {
+  color: gray;
+}
+::placeholder {
+  color: gray;
+}
+```
+
+##
+
 
 ---
 
@@ -46,6 +77,10 @@ TS2792: Cannot find module './images/screenshot.png'. Did you mean to set the 'm
 ## css 파일을 해석하지 못하는 문제
 
 PostCss가 의존하는 autoprefixer 설치로 해결
+
+## swr 설치후 module not found 에러 
+
+tsconfig.json에 "moduleResolution": "node" 추가로 해결
 
 ---
 
