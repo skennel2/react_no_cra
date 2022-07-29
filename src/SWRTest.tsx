@@ -43,6 +43,12 @@ function getRandomArbitrary(min: number, max: number) {
     return Math.random() * (max - min) + min;
 }
 
+/**
+ * swr에게 제공되는 fetcher 
+ * axios fetch API등으로 대체된다.
+ * 
+ * @param arg 
+ */
 const fetcher = (...arg: any) => {
     return new Promise<any[]>(resolve => {
         setTimeout(() => {

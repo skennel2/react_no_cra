@@ -19,8 +19,16 @@ npm uninstall @babel/cli @babel/core @babel/preset-env @babel/preset-react babel
 
 ## swr 적용
 
----
+```
+npm install swr
+```
 
+크롬 기준으로 다른 탭에 갔다 돌아오면 데이터가 자동으로 갱신된다.
+``` javascript
+const { data, error } = useSWR('test', fetcher);
+```
+
+---
 
 # 사용 패키지  
 

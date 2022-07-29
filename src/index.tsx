@@ -1,36 +1,13 @@
-import React, { useState, useCallback } from 'react';
+import React from 'react';
+import { HashRouter as Router, Link, Route, Routes } from 'react-router-dom';
 import { createRoot } from 'react-dom/client';
-import testImage from './images/screenshot.png';
 import './index.css';
 import TestComponent from './TestComponent';
 import styled from 'styled-components';
 import SqlProcessor from './SqlProcessor';
 import SWRTest from './SWRTest';
-
-interface CounterState {
-    count: number
-}
-
-interface CounterAction {
-    type: 'INCREASE' | 'DECREASE',
-    value: number
-}
-
-function counterReducer(initialState: CounterState, action: CounterAction): CounterState {
-    if(action.type === 'INCREASE') {
-        return {
-            ...initialState,
-            count: initialState.count + action.value
-        }
-    } else if(action.type === 'DECREASE')  {
-        return {
-            ...initialState,
-            count: initialState.count - action.value
-        }
-    }
-
-    return initialState;
-}
+import { ClickCounter } from './ClickCounter';
+import { ImageLoadTest } from './ImageLoadTest';
 
 function runApp() {
     logForTestEnvValueSettting();
@@ -40,60 +17,59 @@ function runApp() {
         height: 300px;
     `;
 
-    const container = document.getElementById('root');
-    if (container) {
-        const root = createRoot(container);
-        root.render(
-            <>
-                {/* <ClickCounter name={'카운터'} />
-                <StyledImageLoadTest />
-                <TestComponent /> */}
-                {/* <SqlProcessor /> */}
-                <SWRTest />
-            </>
-        );
-
-        console.log("app started!");
-    }
-}
-
-function logForTestEnvValueSettting() {
-    console.log(process.env.TEST_VALUE)
-}
-
-export function ClickCounter(props: { name: string }) {
     const SimpleRect = styled.div`
+        display: flex;
+        flex-direction: column;
         color: tomato;
         border-color: tomato;
         border: 1px solid;
-        display: inline-block;
         padding: 10px;
         border-radius: 10px
     `;
 
-    const RedRect = styled(SimpleRect)`
-        color: red;
-        border-color: red;
-    `;
+    const container = document.getElementById('root');
+    if (container) {
+        const root = createRoot(container);
+        root.render(
+            <Router>
+                <div style={{
+                    display: 'flex'
+                }}>
+                    <SimpleRect>
+                        <Link to={'SWRTest'}>SWRTest</Link>
+                        <Link to={'TestComponent'}>TestComponent</Link>
+                        <Link to={'SqlProcessor'}>SqlProcessor</Link>
+                        <Link to={'StyledImageLoadTest'}>StyledImageLoadTest</Link>
+                        <Link to={'ClickCounter'}>ClickCounter</Link>
 
-    const [count, setCount] = useState(0);
+                    </SimpleRect>
+                    <div>
+                        <Routes>
+                            <Route path="/" element={<App />} />
+                            <Route path="/ClickCounter" element={<ClickCounter name={'Counter'} />} />
+                            <Route path="/SWRTest" element={<SWRTest />} />
+                            <Route path="/TestComponent" element={<TestComponent />} />
+                            <Route path="/SqlProcessor" element={<SqlProcessor />} />
+                            <Route path="/StyledImageLoadTest" element={<StyledImageLoadTest />} />
+                            <Route path="*" element={<div>Not Found</div>} />
+                        </Routes>
+                    </div>
+                </div>
+            </Router>
+        );
+    }
+}
 
-    const handleClick = useCallback((e: any) => {
-        console.log(e);
-        setCount(count + 1);
-    }, [count]);
-
+function App() {
     return (
-        <RedRect onClick={handleClick}>
-            {props.name} {count}
-        </RedRect>
+        <>
+            HelloWorld
+        </>
     )
 }
 
-export function ImageLoadTest(props: { className?: string }) {
-    return (
-        <img className={props.className} src={testImage} alt={'for test'} />
-    )
+function logForTestEnvValueSettting() {
+    console.log(process.env.TEST_VALUE)
 }
 
 runApp();
