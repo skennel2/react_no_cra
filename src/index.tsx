@@ -7,7 +7,31 @@ import styled from 'styled-components';
 import SqlProcessor from './SqlProcessor';
 import SWRTest from './SWRTest';
 import { ClickCounter } from './ClickCounter';
+import { ClickCounterUseReducer } from './ClickCounterUseReducer';
 import { ImageLoadTest } from './ImageLoadTest';
+import { Provider } from 'react-redux';
+import { createStore, Action } from 'redux';
+
+export interface RootReducerState {
+    appName: string
+}
+
+export interface RootReducerAction extends Action {
+    payload: string
+}
+
+function rootReducer(state: RootReducerState = { appName: 'Test111' }, action: RootReducerAction): RootReducerState {
+    if (action.type === 'change') {
+        return {
+            ...state,
+            appName: action.payload
+        }
+    }
+
+    return state;
+}
+
+const store = createStore(rootReducer);
 
 function runApp() {
     logForTestEnvValueSettting();
@@ -31,31 +55,34 @@ function runApp() {
     if (container) {
         const root = createRoot(container);
         root.render(
-            <Router>
-                <div style={{
-                    display: 'flex'
-                }}>
-                    <SimpleRect>
-                        <Link to={'SWRTest'}>SWRTest</Link>
-                        <Link to={'TestComponent'}>TestComponent</Link>
-                        <Link to={'SqlProcessor'}>SqlProcessor</Link>
-                        <Link to={'StyledImageLoadTest'}>StyledImageLoadTest</Link>
-                        <Link to={'ClickCounter'}>ClickCounter</Link>
-
-                    </SimpleRect>
-                    <div>
-                        <Routes>
-                            <Route path="/" element={<App />} />
-                            <Route path="/ClickCounter" element={<ClickCounter name={'Counter'} />} />
-                            <Route path="/SWRTest" element={<SWRTest />} />
-                            <Route path="/TestComponent" element={<TestComponent />} />
-                            <Route path="/SqlProcessor" element={<SqlProcessor />} />
-                            <Route path="/StyledImageLoadTest" element={<StyledImageLoadTest />} />
-                            <Route path="*" element={<div>Not Found</div>} />
-                        </Routes>
+            <Provider store={store}>
+                <Router>
+                    <div style={{
+                        display: 'flex'
+                    }}>
+                        <SimpleRect>
+                            <Link to={'SWRTest'}>SWRTest</Link>
+                            <Link to={'TestComponent'}>TestComponent</Link>
+                            <Link to={'SqlProcessor'}>SqlProcessor</Link>
+                            <Link to={'StyledImageLoadTest'}>StyledImageLoadTest</Link>
+                            <Link to={'ClickCounter'}>ClickCounter</Link>
+                            <Link to={'ClickCounterUseReducer'}>ClickCounterUseReducer</Link>
+                        </SimpleRect>
+                        <div>
+                            <Routes>
+                                <Route path="/" element={<App />} />
+                                <Route path="/ClickCounter" element={<ClickCounter name={'Counter'} />} />
+                                <Route path="/ClickCounterUseReducer" element={<ClickCounterUseReducer name={'Counter'} />} />
+                                <Route path="/SWRTest" element={<SWRTest />} />
+                                <Route path="/TestComponent" element={<TestComponent />} />
+                                <Route path="/SqlProcessor" element={<SqlProcessor />} />
+                                <Route path="/StyledImageLoadTest" element={<StyledImageLoadTest />} />
+                                <Route path="*" element={<div>Not Found</div>} />
+                            </Routes>
+                        </div>
                     </div>
-                </div>
-            </Router>
+                </Router>
+            </Provider>
         );
     }
 }

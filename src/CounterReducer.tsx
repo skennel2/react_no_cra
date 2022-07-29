@@ -1,11 +1,12 @@
-interface CounterState {
+export interface CounterState {
     count: number;
 }
-interface CounterAction {
+export interface CounterAction {
     type: 'INCREASE' | 'DECREASE';
     value: number;
 }
-function counterReducer(initialState: CounterState, action: CounterAction): CounterState {
+
+export function counterReducer(initialState: CounterState, action: CounterAction): CounterState {
     if (action.type === 'INCREASE') {
         return {
             ...initialState,
