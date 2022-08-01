@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Reducer } from 'react';
 import { HashRouter as Router, Link, Route, Routes } from 'react-router-dom';
 import { createRoot } from 'react-dom/client';
 import './index.css';
@@ -10,10 +10,34 @@ import { ClickCounter } from './ClickCounter';
 import { ClickCounterUseReducer } from './ClickCounterUseReducer';
 import { ImageLoadTest } from './ImageLoadTest';
 import { Provider } from 'react-redux';
-import { createStore, Action } from 'redux';
-import StoreTestComponent, { StoreTestReducer } from './StoreTestComponent';
+import { createStore, Action, combineReducers } from 'redux';
+import StoreTestComponent, { StoreTestReducer, StoreTestReducer2, StoreTestState, StoreTestAction } from './StoreTestComponent';
 
-const store = createStore(StoreTestReducer);
+/**
+ * 고차 컴포넌트로 리듀서 커스텀
+ * 두 리듀서에 동일한 키의 액션 type이 있는것을 해결한다.
+ * @param name 
+ * @param reducer 
+ */
+function useNamedReducer(name: string, reducer: Reducer<StoreTestState, StoreTestAction>): Reducer<StoreTestState, StoreTestAction> {
+    return function (state: StoreTestState, action: StoreTestAction) {
+        if(action.type === `change_${name}`) {
+            return reducer(state, {
+                ...action,
+                type: 'change'
+            })
+        }
+
+        return reducer(state, action);
+    }
+}
+
+const rootReducer = combineReducers({
+    StoreTestReducer: useNamedReducer('A', StoreTestReducer),
+    StoreTestReducer2: useNamedReducer('B', StoreTestReducer2),
+});
+
+const store = createStore(rootReducer);
 
 function runApp() {
     logForTestEnvValueSettting();
