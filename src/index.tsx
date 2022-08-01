@@ -3,6 +3,7 @@ import { HashRouter as Router, Link, Route, Routes } from 'react-router-dom';
 import { createRoot } from 'react-dom/client';
 import './index.css';
 import TestComponent from './TestComponent';
+import UseRefTestComponent from './UseRefTestComponent';
 import styled from 'styled-components';
 import SqlProcessor from './SqlProcessor';
 import SWRTest from './SWRTest';
@@ -81,6 +82,8 @@ function runApp() {
                             <Link to={'ClickCounter'}>ClickCounter</Link>
                             <Link to={'ClickCounterUseReducer'}>ClickCounterUseReducer</Link>
                             <Link to={'StoreTestComponent'}>StoreTestComponent</Link>
+                            <Link to={'UseRefTestComponent'}>UseRefTestComponent</Link>
+
                         </SimpleRect>
                         <div>
                             <Routes>
@@ -92,6 +95,7 @@ function runApp() {
                                 <Route path="/SqlProcessor" element={<SqlProcessor />} />
                                 <Route path="/StyledImageLoadTest" element={<StyledImageLoadTest />} />
                                 <Route path="/StoreTestComponent" element={<StoreTestComponent />} />
+                                <Route path="/UseRefTestComponent" element={<UseRefTestComponent />} />
                                 <Route path="*" element={<div>Not Found</div>} />
                             </Routes>
                         </div>

@@ -49,7 +49,7 @@ async function asyncJobTest(dispatch: Dispatch<StoreTestAction>) {
                 payload: '1'
             })
             resolve()
-        }, 2000);
+        }, 1000);
     })
 
     await new Promise<void>(resolve => {
@@ -69,7 +69,7 @@ async function asyncJobTest(dispatch: Dispatch<StoreTestAction>) {
                 payload: '3'
             })
             resolve()
-        }, 2000);
+        }, 3000);
     })    
 }
 
