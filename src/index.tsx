@@ -39,6 +39,13 @@ const rootReducer = combineReducers({
 
 const store = createStore(rootReducer);
 
+console.log('initial store state',store.getState())
+
+store.dispatch({
+    type: 'change_B',
+    payload: 's333'
+})
+
 function runApp() {
     logForTestEnvValueSettting();
 
