@@ -11,8 +11,9 @@ export interface StoreTestAction extends Action {
     payload: string
 }
 
-export function StoreTestReducer(state: StoreTestState = { appName: 'Test111' }, action: StoreTestAction): StoreTestState {
+export function StoreTestReducer(state: StoreTestState = { appName: '초기값' }, action: StoreTestAction): StoreTestState {
     console.log(state, action)
+    
     if (action.type === 'change') {
         return {
             ...state,
@@ -23,7 +24,7 @@ export function StoreTestReducer(state: StoreTestState = { appName: 'Test111' },
     return state;
 }
 
-export function StoreTestReducer2(state: StoreTestState = { appName: 'Test222' }, action: StoreTestAction): StoreTestState {
+export function StoreTestReducer2(state: StoreTestState = { appName: '초기값' }, action: StoreTestAction): StoreTestState {
     console.log(state, action)
 
     if (action.type === 'change') {
@@ -37,8 +38,7 @@ export function StoreTestReducer2(state: StoreTestState = { appName: 'Test222' }
 }
 
 export const asyncTest = async (dispatch: Dispatch<StoreTestAction>) => {
-    // await 
-    
+    // await    
 }
 
 export interface GlobalReducer {
@@ -86,25 +86,27 @@ export default function StoreTestComponent() {
     const handleButtonClick = useCallback(() => {
         dispatch({
             type: 'change_A',
-            payload: 'ssss'
+            payload: '데이터 변경'
         })
     }, [])
 
     return (
         <div className='blue'>
             <button onClick={handleButtonClick}>
-                클릭
+                데이터 변경
             </button>
             <button onClick={async () => {
                 await asyncJobTest(dispatch)
             }}>
-                클릭
+                비동기 작업 실행 
             </button>
             <div>
-                {name}
+                <span>A 데이터: </span>
+                <span>{name}</span>
             </div>
             <div>
-                {name2}
+                <span>B 데이터: </span>
+                <span>{name2}</span>
             </div>
         </div>
     )

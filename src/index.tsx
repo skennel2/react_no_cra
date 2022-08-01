@@ -11,7 +11,7 @@ import { ClickCounter } from './ClickCounter';
 import { ClickCounterUseReducer } from './ClickCounterUseReducer';
 import { ImageLoadTest } from './ImageLoadTest';
 import { Provider } from 'react-redux';
-import { createStore, Action, combineReducers } from 'redux';
+import { createStore, combineReducers } from 'redux';
 import StoreTestComponent, { StoreTestReducer, StoreTestReducer2, StoreTestState, StoreTestAction } from './StoreTestComponent';
 
 /**
@@ -44,7 +44,7 @@ console.log('initial store state',store.getState())
 
 store.dispatch({
     type: 'change_B',
-    payload: 's333'
+    payload: 'index에서 데이터 변경'
 })
 
 function runApp() {
