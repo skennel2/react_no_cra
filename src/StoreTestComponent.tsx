@@ -36,6 +36,11 @@ export function StoreTestReducer2(state: StoreTestState = { appName: 'Test222' }
     return state;
 }
 
+export const asyncTest = async (dispatch: Dispatch<StoreTestAction>) => {
+    // await 
+    
+}
+
 export interface GlobalReducer {
     StoreTestReducer: StoreTestState,
     StoreTestReducer2: StoreTestState
