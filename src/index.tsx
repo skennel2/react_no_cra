@@ -11,9 +11,9 @@ import { ClickCounterUseReducer } from './ClickCounterUseReducer';
 import { ImageLoadTest } from './ImageLoadTest';
 import { Provider } from 'react-redux';
 import { createStore, Action } from 'redux';
-import { rootReducer } from './StoreTestComponent';
+import StoreTestComponent, { StoreTestReducer } from './StoreTestComponent';
 
-const store = createStore(rootReducer);
+const store = createStore(StoreTestReducer);
 
 function runApp() {
     logForTestEnvValueSettting();
@@ -43,12 +43,13 @@ function runApp() {
                         display: 'flex'
                     }}>
                         <SimpleRect>
-                            <Link to={'SWRTest'}>SWRTest</Link>
                             <Link to={'TestComponent'}>TestComponent</Link>
+                            <Link to={'SWRTest'}>SWRTest</Link>
                             <Link to={'SqlProcessor'}>SqlProcessor</Link>
                             <Link to={'StyledImageLoadTest'}>StyledImageLoadTest</Link>
                             <Link to={'ClickCounter'}>ClickCounter</Link>
                             <Link to={'ClickCounterUseReducer'}>ClickCounterUseReducer</Link>
+                            <Link to={'StoreTestComponent'}>StoreTestComponent</Link>
                         </SimpleRect>
                         <div>
                             <Routes>
@@ -59,6 +60,7 @@ function runApp() {
                                 <Route path="/TestComponent" element={<TestComponent />} />
                                 <Route path="/SqlProcessor" element={<SqlProcessor />} />
                                 <Route path="/StyledImageLoadTest" element={<StyledImageLoadTest />} />
+                                <Route path="/StoreTestComponent" element={<StoreTestComponent />} />
                                 <Route path="*" element={<div>Not Found</div>} />
                             </Routes>
                         </div>

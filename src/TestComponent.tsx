@@ -12,7 +12,6 @@ export default function TestComponent() {
             <button onClick={handleButtonClick}>
                 클릭
             </button>
-            {name}
         </div>
     )
 }

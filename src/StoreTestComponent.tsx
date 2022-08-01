@@ -3,15 +3,15 @@ import './TestComponent.css';
 import { useSelector, useDispatch } from 'react-redux';
 import { Action } from 'redux';
 
-export interface RootReducerState {
+export interface StoreTestState {
     appName: string
 }
 
-export interface RootReducerAction extends Action {
+export interface StoreTestAction extends Action {
     payload: string
 }
 
-export function rootReducer(state: RootReducerState = { appName: 'Test111' }, action: RootReducerAction): RootReducerState {
+export function StoreTestReducer(state: StoreTestState = { appName: 'Test111' }, action: StoreTestAction): StoreTestState {
     if (action.type === 'change') {
         return {
             ...state,
@@ -23,7 +23,7 @@ export function rootReducer(state: RootReducerState = { appName: 'Test111' }, ac
 }
 
 export default function StoreTestComponent() {
-    const name = useSelector<RootReducerState, string>(state => state.appName)
+    const name = useSelector<StoreTestState, string>(state => state.appName)
     const dispatch = useDispatch();
 
     const handleButtonClick = useCallback(() => {
