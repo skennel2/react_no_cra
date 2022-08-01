@@ -1,7 +1,8 @@
 import React, { forwardRef, RefObject, useImperativeHandle, useRef, useState } from 'react';
 
 interface MyInputProps {
-    defaultValue: string
+    defaultValue: string;
+    onBeforeChange?: (value: string) => boolean;
 }
 
 interface MyInputRef {
@@ -33,11 +34,15 @@ const MyUncontrolledInput = React.forwardRef(function (props: MyInputProps, refs
     });
 
     return (
-        <input 
+        <input
             ref={inputRef}
             value={value}
             onChange={(e) => {
-                setValue(e.target.value)
+                if (props.onBeforeChange && !props.onBeforeChange(e.target.value)) {
+                    return;
+                }
+
+                setValue(e.target.value);
             }}
         />
     )
@@ -59,7 +64,15 @@ export default function UseRefTestComponent() {
             }}>
                 MyInput focus
             </button>
-            <MyUncontrolledInput ref={inputRef} defaultValue={''}/>
+            <MyUncontrolledInput 
+                ref={inputRef} 
+                defaultValue={''} 
+                onBeforeChange={(value) => {
+                    if(value === '111') {
+                        return false;
+                    }
+                    return true;
+                }} />
         </div>
     )
 }
