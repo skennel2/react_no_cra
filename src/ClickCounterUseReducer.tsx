@@ -1,5 +1,4 @@
 import React, { useState, useCallback, useReducer } from 'react';
-import styled from 'styled-components';
 import { counterReducer } from './CounterReducer';
 
 export function ClickCounterUseReducer(props: { name: string; }) {

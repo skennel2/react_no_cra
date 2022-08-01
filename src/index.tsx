@@ -11,25 +11,7 @@ import { ClickCounterUseReducer } from './ClickCounterUseReducer';
 import { ImageLoadTest } from './ImageLoadTest';
 import { Provider } from 'react-redux';
 import { createStore, Action } from 'redux';
-
-export interface RootReducerState {
-    appName: string
-}
-
-export interface RootReducerAction extends Action {
-    payload: string
-}
-
-function rootReducer(state: RootReducerState = { appName: 'Test111' }, action: RootReducerAction): RootReducerState {
-    if (action.type === 'change') {
-        return {
-            ...state,
-            appName: action.payload
-        }
-    }
-
-    return state;
-}
+import { rootReducer } from './StoreTestComponent';
 
 const store = createStore(rootReducer);
 

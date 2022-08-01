@@ -23,25 +23,69 @@ npm uninstall @babel/cli @babel/core @babel/preset-env @babel/preset-react babel
 npm install swr
 ```
 
-크롬 기준으로 다른 탭에 갔다 돌아오면 데이터가 자동으로 갱신된다.
+적용했을때 크롬 기준으로 다른 탭에 갔다 돌아오면 데이터가 자동으로 갱신된다.
 ``` javascript
 const { data, error } = useSWR('test', fetcher);
 ```
 
+## React Router
+
+설치 
+```
+npm install react-router-dom 
+```
+
+HashRouter와 BrowserRouter의 차이  
+* HashRouter 
+- 주소값에 해쉬가 붙는다.
+- 검색엔진이 읽지 못한다.
+  
+* BrowserRouter
+- History API 사용
+- URL 입력으로 특정 페이지로 이동하는것이 지원되지 않는거같다.
+
 ---
+
+## store 적용
+
+createStore에 reducer 전달로 스토어 생성
+```javascript
+const store = createStore(rootReducer);
+```
+
+스토어 전달
+```jsx
+<Provider store={store}>
+```
+
+스토어 사용
+```javascript
+  import { useSelector, useDispatch } from 'react-redux';
+  import { Action } from 'redux';
+
+    const name = useSelector<RootReducerState, string>(state => state.appName)
+    const dispatch = useDispatch();
+
+    const handleButtonClick = useCallback(() => {
+        dispatch({
+            type: 'change',
+            payload: 'ssss'
+        })
+    }, [])
+```
 
 # 사용 패키지  
 
 ## AutoPrefixer: PostCSS 플러그인, 자동으로 벤더 prefix를 채워주는 기능  
 처리전  
-```
+```css
 ::placeholder {
   color: gray;
 }
 ```
   
 처리후  
-```
+```css
 ::-moz-placeholder {
   color: gray;
 }
