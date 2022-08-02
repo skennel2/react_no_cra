@@ -12,6 +12,7 @@ import { ImageLoadTest } from './ImageLoadTest';
 import { Provider } from 'react-redux';
 import { createStore, combineReducers } from 'redux';
 import StoreTest, { StoreTestReducer, StoreTestReducer2, StoreTestState, StoreTestAction } from './StoreTest';
+import UseEffectTest from './UseEffectTest';
 
 /**
  * 고차 컴포넌트로 리듀서 커스텀
@@ -65,7 +66,7 @@ function runApp() {
                             <Link to={'ClickCounterUseReducer'}>ClickCounterUseReducer</Link>
                             <Link to={'StoreTestComponent'}>StoreTestComponent</Link>
                             <Link to={'UseRefTestComponent'}>UseRefTestComponent</Link>
-
+                            <Link to={'UseEffectTest'}>UseEffectTest</Link>
                         </div>
                         <div>
                             <Routes>
@@ -78,6 +79,7 @@ function runApp() {
                                 <Route path="/ImageLoadTest" element={<ImageLoadTest />} />
                                 <Route path="/StoreTestComponent" element={<StoreTest />} />
                                 <Route path="/UseRefTestComponent" element={<UseRefTest />} />
+                                <Route path="/UseEffectTest" element={<UseEffectTest />} />
                                 <Route path="*" element={<div>Not Found</div>} />
                             </Routes>
                         </div>
