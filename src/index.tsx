@@ -4,7 +4,6 @@ import { createRoot } from 'react-dom/client';
 import './index.css';
 import TestComponent from './TestComponent';
 import UseRefTest from './UseRefTest';
-import styled from 'styled-components';
 import SqlProcessor from './SqlProcessor';
 import SWRTest from './SWRTest';
 import { ClickCounter } from './ClickCounter';
@@ -50,41 +49,24 @@ store.dispatch({
 function runApp() {
     logForTestEnvValueSettting();
 
-    const StyledImageLoadTest = styled(ImageLoadTest)`
-        width: 300px;
-        height: 300px;
-    `;
-
-    const SimpleRect = styled.div`
-        display: flex;
-        flex-direction: column;
-        color: tomato;
-        border-color: tomato;
-        border: 1px solid;
-        padding: 10px;
-        border-radius: 10px
-    `;
-
     const container = document.getElementById('root');
     if (container) {
         const root = createRoot(container);
         root.render(
             <Provider store={store}>
                 <Router>
-                    <div style={{
-                        display: 'flex'
-                    }}>
-                        <SimpleRect>
+                    <div>
+                        <div>
                             <Link to={'TestComponent'}>TestComponent</Link>
                             <Link to={'SWRTest'}>SWRTest</Link>
                             <Link to={'SqlProcessor'}>SqlProcessor</Link>
-                            <Link to={'StyledImageLoadTest'}>StyledImageLoadTest</Link>
+                            <Link to={'ImageLoadTest'}>ImageLoadTest</Link>
                             <Link to={'ClickCounter'}>ClickCounter</Link>
                             <Link to={'ClickCounterUseReducer'}>ClickCounterUseReducer</Link>
                             <Link to={'StoreTestComponent'}>StoreTestComponent</Link>
                             <Link to={'UseRefTestComponent'}>UseRefTestComponent</Link>
 
-                        </SimpleRect>
+                        </div>
                         <div>
                             <Routes>
                                 <Route path="/" element={<App />} />
@@ -93,7 +75,7 @@ function runApp() {
                                 <Route path="/SWRTest" element={<SWRTest />} />
                                 <Route path="/TestComponent" element={<TestComponent />} />
                                 <Route path="/SqlProcessor" element={<SqlProcessor />} />
-                                <Route path="/StyledImageLoadTest" element={<StyledImageLoadTest />} />
+                                <Route path="/ImageLoadTest" element={<ImageLoadTest />} />
                                 <Route path="/StoreTestComponent" element={<StoreTest />} />
                                 <Route path="/UseRefTestComponent" element={<UseRefTest />} />
                                 <Route path="*" element={<div>Not Found</div>} />
