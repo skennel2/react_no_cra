@@ -37,10 +37,6 @@ export function StoreTestReducer2(state: StoreTestState = { appName: '초기값'
     return state;
 }
 
-export const asyncTest = async (dispatch: Dispatch<StoreTestAction>) => {
-    // await    
-}
-
 export interface GlobalReducer {
     StoreTestReducer: StoreTestState,
     StoreTestReducer2: StoreTestState
@@ -78,7 +74,7 @@ async function asyncJobTest(dispatch: Dispatch<StoreTestAction>) {
     })    
 }
 
-export default function StoreTestComponent() {
+export default function StoreTest() {
     const name = useSelector<GlobalReducer, string>(state => state.StoreTestReducer.appName)
     const name2 = useSelector<GlobalReducer, string>(state => state.StoreTestReducer2.appName)
     const dispatch = useDispatch();

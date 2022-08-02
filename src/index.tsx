@@ -3,7 +3,7 @@ import { HashRouter as Router, Link, Route, Routes } from 'react-router-dom';
 import { createRoot } from 'react-dom/client';
 import './index.css';
 import TestComponent from './TestComponent';
-import UseRefTestComponent from './UseRefTestComponent';
+import UseRefTest from './UseRefTest';
 import styled from 'styled-components';
 import SqlProcessor from './SqlProcessor';
 import SWRTest from './SWRTest';
@@ -12,7 +12,7 @@ import { ClickCounterUseReducer } from './ClickCounterUseReducer';
 import { ImageLoadTest } from './ImageLoadTest';
 import { Provider } from 'react-redux';
 import { createStore, combineReducers } from 'redux';
-import StoreTestComponent, { StoreTestReducer, StoreTestReducer2, StoreTestState, StoreTestAction } from './StoreTestComponent';
+import StoreTest, { StoreTestReducer, StoreTestReducer2, StoreTestState, StoreTestAction } from './StoreTest';
 
 /**
  * 고차 컴포넌트로 리듀서 커스텀
@@ -94,8 +94,8 @@ function runApp() {
                                 <Route path="/TestComponent" element={<TestComponent />} />
                                 <Route path="/SqlProcessor" element={<SqlProcessor />} />
                                 <Route path="/StyledImageLoadTest" element={<StyledImageLoadTest />} />
-                                <Route path="/StoreTestComponent" element={<StoreTestComponent />} />
-                                <Route path="/UseRefTestComponent" element={<UseRefTestComponent />} />
+                                <Route path="/StoreTestComponent" element={<StoreTest />} />
+                                <Route path="/UseRefTestComponent" element={<UseRefTest />} />
                                 <Route path="*" element={<div>Not Found</div>} />
                             </Routes>
                         </div>
