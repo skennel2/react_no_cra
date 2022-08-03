@@ -55,13 +55,13 @@ export default function UseEffectTest() {
                         {show ? 'hide' : 'show'}
                     </button>
                 </div>
-                {show && <SimpleComponent name={'Carti'} />}
+                {show && <SimpleComponent name={'Carti'} hobby={['study', 'cooking']} />}
             </div>
         </div>
     )
 }
 
-function SimpleComponent(props: { name: string }) {
+function SimpleComponent(props: { name: string, hobby: string[] }) {
     useEffect(() => {
         console.log(props.name, 'mount')
         return () => {
@@ -69,7 +69,20 @@ function SimpleComponent(props: { name: string }) {
         }
     }, [])
 
+    useEffect(() => {
+        console.log(props.name, 'hobby changed')
+    }, [props.hobby])
+
     return <div>
-        {`I Am ${props.name}`}
+        <div>
+            {`I Am ${props.name}`}
+        </div>
+        <div>
+            {
+                props.hobby.map((item) => {
+                    return <div>{item}</div>
+                })
+            }
+        </div>
     </div>
 }

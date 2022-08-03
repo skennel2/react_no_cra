@@ -13,6 +13,14 @@ import { Provider } from 'react-redux';
 import { createStore, combineReducers } from 'redux';
 import StoreTest, { StoreTestReducer, StoreTestReducer2, StoreTestState, StoreTestAction } from './StoreTest';
 import UseEffectTest from './UseEffectTest';
+import StyledComponentTest from './StyledComponentTest';
+import {
+    useQuery,
+    useMutation,
+    useQueryClient,
+    QueryClient,
+    QueryClientProvider,
+} from '@tanstack/react-query'
 
 /**
  * 고차 컴포넌트로 리듀서 커스텀
@@ -22,7 +30,7 @@ import UseEffectTest from './UseEffectTest';
  */
 function useNamedReducer(name: string, reducer: Reducer<StoreTestState, StoreTestAction>): Reducer<StoreTestState, StoreTestAction> {
     return function (state: StoreTestState, action: StoreTestAction) {
-        if(action.type === `change_${name}`) {
+        if (action.type === `change_${name}`) {
             return reducer(state, {
                 ...action,
                 type: 'change'
@@ -40,7 +48,7 @@ const rootReducer = combineReducers({
 
 const store = createStore(rootReducer);
 
-console.log('initial store state',store.getState())
+console.log('initial store state', store.getState())
 
 store.dispatch({
     type: 'change_B',
@@ -54,38 +62,42 @@ function runApp() {
     if (container) {
         const root = createRoot(container);
         root.render(
-            <Provider store={store}>
-                <Router>
-                    <div>
+            <QueryClientProvider client={queryClient}>
+                <Provider store={store}>
+                    <Router>
                         <div>
-                            <Link to={'TestComponent'}>TestComponent</Link>
-                            <Link to={'SWRTest'}>SWRTest</Link>
-                            <Link to={'SqlProcessor'}>SqlProcessor</Link>
-                            <Link to={'ImageLoadTest'}>ImageLoadTest</Link>
-                            <Link to={'ClickCounter'}>ClickCounter</Link>
-                            <Link to={'ClickCounterUseReducer'}>ClickCounterUseReducer</Link>
-                            <Link to={'StoreTestComponent'}>StoreTestComponent</Link>
-                            <Link to={'UseRefTestComponent'}>UseRefTestComponent</Link>
-                            <Link to={'UseEffectTest'}>UseEffectTest</Link>
+                            <div>
+                                <Link to={'TestComponent'}>TestComponent</Link>
+                                <Link to={'SWRTest'}>SWRTest</Link>
+                                <Link to={'SqlProcessor'}>SqlProcessor</Link>
+                                <Link to={'ImageLoadTest'}>ImageLoadTest</Link>
+                                <Link to={'ClickCounter'}>ClickCounter</Link>
+                                <Link to={'ClickCounterUseReducer'}>ClickCounterUseReducer</Link>
+                                <Link to={'StoreTestComponent'}>StoreTestComponent</Link>
+                                <Link to={'UseRefTestComponent'}>UseRefTestComponent</Link>
+                                <Link to={'UseEffectTest'}>UseEffectTest</Link>
+                                <Link to={'StyledComponentTest'}>StyledComponentTest</Link>
+                            </div>
+                            <div>
+                                <Routes>
+                                    <Route path="/" element={<App />} />
+                                    <Route path="/ClickCounter" element={<ClickCounter name={'Counter'} />} />
+                                    <Route path="/ClickCounterUseReducer" element={<ClickCounterUseReducer name={'Counter'} />} />
+                                    <Route path="/SWRTest" element={<SWRTest />} />
+                                    <Route path="/TestComponent" element={<TestComponent />} />
+                                    <Route path="/SqlProcessor" element={<SqlProcessor />} />
+                                    <Route path="/ImageLoadTest" element={<ImageLoadTest />} />
+                                    <Route path="/StoreTestComponent" element={<StoreTest />} />
+                                    <Route path="/UseRefTestComponent" element={<UseRefTest />} />
+                                    <Route path="/UseEffectTest" element={<UseEffectTest />} />
+                                    <Route path="/StyledComponentTest" element={<StyledComponentTest />} />
+                                    <Route path="*" element={<div>Not Found</div>} />
+                                </Routes>
+                            </div>
                         </div>
-                        <div>
-                            <Routes>
-                                <Route path="/" element={<App />} />
-                                <Route path="/ClickCounter" element={<ClickCounter name={'Counter'} />} />
-                                <Route path="/ClickCounterUseReducer" element={<ClickCounterUseReducer name={'Counter'} />} />
-                                <Route path="/SWRTest" element={<SWRTest />} />
-                                <Route path="/TestComponent" element={<TestComponent />} />
-                                <Route path="/SqlProcessor" element={<SqlProcessor />} />
-                                <Route path="/ImageLoadTest" element={<ImageLoadTest />} />
-                                <Route path="/StoreTestComponent" element={<StoreTest />} />
-                                <Route path="/UseRefTestComponent" element={<UseRefTest />} />
-                                <Route path="/UseEffectTest" element={<UseEffectTest />} />
-                                <Route path="*" element={<div>Not Found</div>} />
-                            </Routes>
-                        </div>
-                    </div>
-                </Router>
-            </Provider>
+                    </Router>
+                </Provider>
+            </QueryClientProvider>
         );
     }
 }
