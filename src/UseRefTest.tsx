@@ -12,10 +12,10 @@ interface MyInputRef {
 }
 
 /**
- * 일반적으로 ref로 외부에서 접근 가능한 컴포넌트의 형태는 클래스형식이다. 
+ * 일반적으로 ref로 내부 접근 가능한 컴포넌트의 형태는 클래스 기반 컴포넌트이다. 
  * useImperativeHandle과 forwardRef를 이용해서 거의 동일하게 구현하는것이 가능하다.
  */
-const MyFunctionalUncontrolledInput = React.forwardRef(function (props: MyInputProps, refs: RefObject<MyInputRef>) {
+const MyFunctionalUncontrolledInput = React.forwardRef((props: MyInputProps, refs: RefObject<MyInputRef>) => {
     const [value, setValue] = useState('')
     const inputRef = useRef<HTMLInputElement>();
 
@@ -33,7 +33,7 @@ const MyFunctionalUncontrolledInput = React.forwardRef(function (props: MyInputP
             clear: () => {
                 setValue('')
             }
-        }
+        } as MyInputRef
     });
 
     return (
@@ -63,6 +63,10 @@ export default function UseRefTest() {
         inputRef.current.focus();
     }, [])
 
+    const handleClickClear = useCallback(() => {
+        inputRef.current.clear();
+    }, [])
+
     const handleBeforeChange = useCallback((value: string) => {
         if (value === '111') {
             return false;
@@ -72,9 +76,11 @@ export default function UseRefTest() {
 
     return (
         <div ref={ref} className='blue'>
-            <button onClick={handleClickGetValue}>MyInput의 Value</button>
+            <button onClick={handleClickGetValue}>MyInput의 getValue</button>
             <button onClick={handleClickFocus}>MyInput focus</button>
+            <button onClick={handleClickClear}>MyInput의 clear</button>
             <MyFunctionalUncontrolledInput
+                // 클래스 컴포넌트 처럼 ref props를 사용할 수 있다.
                 ref={inputRef}
                 defaultValue={''}
                 onBeforeChange={handleBeforeChange} />

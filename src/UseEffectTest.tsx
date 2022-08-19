@@ -55,7 +55,20 @@ export default function UseEffectTest() {
                         {show ? 'hide' : 'show'}
                     </button>
                 </div>
-                {show && <SimpleComponent name={'Carti'} hobby={['study', 'cooking']} />}
+                {/* 
+                    테스트 시나리오 
+                    show state에 따라 mount, unmount가 실제로 수행되는지 테스트
+                    state값을 따라 mount, unmount가 번갈아 일어난다.
+                */}
+                {
+                    show && <SimpleComponent
+                        name={'Carti'}
+                        // 테스트 시나리오, props로 배열을 렌더링마다 재생성되게 넘겼을떄 (불변성을 지키지 않았을때)
+                        // SimpleComponent의 useEffect가 어떻게 동작하는지 확인
+                        // hobby props를 체크하는 useEffect 콜백은 매번 호출된다.
+                        hobby={['study', 'cooking']}
+                    />
+                }
             </div>
         </div>
     )
