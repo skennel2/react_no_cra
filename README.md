@@ -49,7 +49,10 @@ HashRouter와 BrowserRouter의 차이
 ## store 적용
 
 createStore에 reducer 전달로 스토어 생성
+
 ```javascript
+import { createStore } from 'redux';
+
 const store = createStore(rootReducer);
 ```
 
